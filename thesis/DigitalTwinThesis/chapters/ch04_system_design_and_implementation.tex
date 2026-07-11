@@ -1,0 +1,106 @@
+% ===================================================
+% File: ch04_system_design_and_implementation.tex
+% Purpose: Details the final system architecture, 3D modeling in Blender, and Unreal Engine 5 implementation.
+% Referenced by: main.tex
+% Status: Ready to Lock
+% ===================================================
+
+\chapter{System Design and Implementation}
+\label{ch:implementation}
+
+\section{System Architecture}
+The development of a visualization-focused Digital Twin requires a robust multi-tier architecture capable of processing raw geographic data into a real-time, interactive 3D environment. The system architecture designed for the Nadakkave Ward Digital Twin is divided into three primary layers: the Data Layer, the Processing Layer, and the Presentation Layer. 
+
+The Data Layer is responsible for ingesting the validated 2D spatial data. The Processing Layer handles the procedural generation of 3D geometry and the assignment of semantic materials. The Presentation Layer governs the real-time rendering and user interaction interface. This structured pipeline ensures that the authoritative accuracy of the Kozhikode Corporation municipal data is perfectly preserved during the transition into a 3D application \cite{ref_digital_twin_architecture}. The complete system architecture and data flow are illustrated in Figure \ref{fig:sys_architecture}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{diagrams/dia_sys_architecture.pdf}
+    \caption{Three-tier system architecture illustrating the data flow from GIS acquisition to real-time Unreal Engine 5 visualization.}
+    \label{fig:sys_architecture}
+\end{figure}
+
+\section{Input Dataset}
+The GIS preprocessing workflow, including attribute enrichment and ESRI Shapefile preparation, was completed during the data acquisition stage discussed in Chapter \ref{ch:data}. The Official Town Planner Dataset, which was validated and appended with calculated height attributes, served as the primary input for the implementation pipeline described in this chapter. By relying on this pre-processed Shapefile, the system design guarantees that the subsequent 3D generation algorithms receive standardized, error-free geometric and volumetric data.
+
+\section{3D Model Generation in Blender}
+The procedural generation of 3D geometry was executed in Blender, which provided the necessary Python API to handle the high-polygon geographic data associated with Nadakkave Ward \cite{ref_blender_software}. The objective of this phase was to programmatically generate a lightweight, optimized 3D mesh from the geographic Shapefile.
+
+\subsection{Import and Procedural Building Extrusion}
+The pre-processed Shapefile was imported directly into the Blender environment using a geospatial add-on capable of parsing ESRI geometries and their associated attribute tables. A procedural Python script was utilized to read the geographic coordinates of each polygon and generate a corresponding flat 2D face on the XY plane. 
+
+The script then read the \texttt{Height} attribute associated with each face and executed a Z-axis extrusion operation. This automated process transformed thousands of flat footprints into volumetric 3D structures, strictly adhering to the calculated heights. The extrusion process is detailed in Figure \ref{fig:blender_pipeline} and visually demonstrated in Figure \ref{fig:blender_extrusion}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{diagrams/dia_blender_pipeline.pdf}
+    \caption{Flowchart detailing the automated 3D mesh generation and material assignment pipeline in Blender.}
+    \label{fig:blender_pipeline}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/ch04/fig_ch4_blender_extrusion.png}
+    \caption{Procedural extrusion of building footprints using the calculated height attributes.}
+    \label{fig:blender_extrusion}
+\end{figure}
+
+\subsection{Category-Based Material Assignment and Export}
+To enhance the semantic readability of the Digital Twin, category-based materials were applied to the generated meshes. Buildings were segmented based on their zoning usage (e.g., residential, commercial, educational) as defined in the imported attribute table. Distinct color materials were procedurally assigned to these categories, allowing for immediate visual differentiation within the 3D environment, as shown in Figure \ref{fig:blender_materials}.
+
+Upon completion of the extrusion and material assignment, the geometry was optimized to remove duplicate vertices. The entire 3D scene was exported in the Filmbox (\texttt{.fbx}) format. Scale and rotational transforms were applied during export to ensure seamless compatibility with real-time engine ingestion.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/ch04/fig_ch4_blender_materials.png}
+    \caption{Application of category-based materials to visually differentiate building usage.}
+    \label{fig:blender_materials}
+\end{figure}
+
+\section{Unreal Engine 5 Implementation}
+The Presentation Layer was developed utilizing Unreal Engine 5 (UE5), selected for its capacity to render dense urban geometry and compute dynamic lighting in real-time \cite{ref_unreal_engine}. The objective was to construct a high-fidelity, interactive environment that hosts the generated 3D assets of Nadakkave Ward.
+
+\subsection{Project Setup}
+A new blank 3D project was initialized in Unreal Engine 5. Real-time rendering plugins, including the Web Browser plugin required for the interactive UI, were explicitly enabled.
+
+\subsection{FBX Import}
+The \texttt{.fbx} file generated by Blender was imported into the Content Browser. The import settings were configured to combine the geometry into optimized Static Meshes. This prevents the engine from rendering thousands of individual draw calls, thereby maintaining high frame rates across the large urban dataset.
+
+\subsection{Terrain}
+A flat, planar terrain geometry was established at the absolute zero Z-axis coordinate to serve as the foundational ground plane for the Nadakkave Ward models.
+
+\subsection{Road Integration}
+The static road networks were imported as 2D plane meshes derived from the original GIS road vector layers. These meshes were positioned slightly above the terrain plane to prevent Z-fighting rendering artifacts, providing an accurate spatial layout linking the extruded buildings.
+
+\subsection{Lighting}
+To simulate realistic environmental conditions, UE5's dynamic lighting systems were implemented \cite{ref_ue5_lighting_docs}. A Directional Light was configured to act as the primary solar light source, providing dynamic shadows based on the extruded building heights. This was augmented by a Sky Light to provide ambient illumination to shadowed areas, and a Sky Atmosphere component to render a physically accurate sky dome over Kozhikode.
+
+\subsection{Camera Configuration}
+A virtual Pawn with an attached Camera Component was configured to allow the user to navigate the environment. Controls were mapped to provide free-roaming, bird's-eye perspective navigation over the ward. The component architecture of this rendering setup is outlined in Figure \ref{fig:ue5_rendering_arch}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{diagrams/dia_ue5_pipeline.pdf}
+    \caption{Component diagram of the Unreal Engine 5 real-time rendering environment.}
+    \label{fig:ue5_rendering_arch}
+\end{figure}
+
+\subsection{Scene Organization}
+To maintain a scalable architecture, the World Outliner was heavily structured using a strict folder hierarchy. Static Meshes, lighting components, and UI blueprints were compartmentalized into separate directories, ensuring robust asset management.
+
+\section{Interactive Building Information System}
+A core requirement of the Digital Twin was interactivity, specifically the ability for stakeholders to retrieve semantic data regarding individual structures without relying on external databases.
+
+To achieve this, an interactive user interface was developed within UE5 utilizing the Web Browser Widget. When a user interacts with a building in the 3D viewport via a mouse click, a mathematical raycast, or LineTrace, is executed from the camera into the world space. Upon hitting a valid building mesh collision box, the system retrieves the underlying semantic metadata (such as category and floor count) embedded directly within the actor's properties. 
+
+This data is passed to the Web Browser Widget, which dynamically populates an overlaid HTML/CSS UI panel with the specific building information. This process relies entirely on static data embedded within the application package; no live databases or real-time synchronization pipelines were utilized. The sequence of this interaction is mapped in Figure \ref{fig:sequence_ui}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{diagrams/dia_sequence_ui.pdf}
+    \caption{Sequence diagram detailing the interactive building information retrieval process.}
+    \label{fig:sequence_ui}
+\end{figure}
+
+\section{Chapter Summary}
+This chapter detailed the comprehensive system design and implementation pipeline utilized to construct the Digital Twin. Bypassing the raw data acquisition phase, the system ingested the pre-processed ESRI Shapefile directly into Blender. Procedural generation techniques were utilized to construct optimized 3D geometry and assign semantic materials based on the municipal zoning data. The resulting assets were imported into Unreal Engine 5, where real-time lighting, environmental rendering, and an interactive Web Browser Widget were configured to create the final immersive application. The visual outcomes and interactive capabilities resulting from this implementation pipeline are presented and analyzed in Chapter \ref{ch:results}.

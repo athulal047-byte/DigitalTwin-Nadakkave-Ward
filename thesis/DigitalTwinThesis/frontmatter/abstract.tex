@@ -1,0 +1,9 @@
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+
+This project presents the development of a visualization-centric Digital Twin for the Nadakkave Ward of Kozhikode Corporation. Traditional municipal planning relies heavily on two-dimensional geographic mapping, which often obscures the spatial complexity and vertical density of modern urban infrastructure. To bridge this gap, this project engineered a reproducible workflow that translates official municipal records into a highly navigable, interactive 3D environment.
+
+The implementation utilized the authoritative 2D Town Planner dataset provided by the Kozhikode Corporation. After processing the building footprints in ArcGIS Pro to mathematically derive Z-axis height attributes based on floor counts, the GIS data was imported into Blender. A procedural generation pipeline then extruded the flat polygons into accurate 3D volumetric meshes. We categorically assigned semantic materials to these structures based on municipal zoning designations before deploying the finalized assets into Unreal Engine 5.
+
+The resulting Digital Twin features a real-time interactive environment with dynamically lit buildings, road networks, and terrain. An integrated Building Information Panel, built using the Unreal Engine Web Browser Widget, responds to raycast interactions and displays embedded semantic metadata for selected structures. This implementation demonstrates a robust methodology for leveraging advanced game engine technology to enhance spatial analysis and stakeholder communication in municipal governance.
+\newpage

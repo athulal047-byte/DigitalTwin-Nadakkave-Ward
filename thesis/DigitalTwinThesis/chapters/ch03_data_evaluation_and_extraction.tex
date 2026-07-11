@@ -1,0 +1,107 @@
+% ===================================================
+% File: ch03_data_evaluation_and_extraction.tex
+% Purpose: Details the evaluation of OSM, Deep Learning extraction, adoption of Town Planner data, height calculation, and export.
+% Referenced by: main.tex
+% Status: Ready to Lock
+% ===================================================
+
+\chapter{Data Evaluation and Extraction Methodology}
+\label{ch:data}
+
+\section{Introduction}
+A Digital Twin fundamentally relies on the accuracy of its underlying spatial data. The acquisition and validation of high-fidelity 2D geospatial data constituted the critical first phase of this project. This chapter details the exploratory methodologies utilized to source building footprints specifically for Nadakkave Ward. It documents the observed limitations of open-source datasets and the experimental use of artificial intelligence for feature extraction. The chapter concludes by outlining the integration of the Official Town Planner Dataset and the specific geoprocessing workflow used to generate volumetric height data from 2D municipal records.
+
+\section{Initial Data Evaluation: OpenStreetMap (OSM)}
+To construct the initial spatial base map for the Nadakkave Ward visualization, vector data from OpenStreetMap (OSM) was evaluated \cite{ref_osm}. Because of its widespread accessibility, OSM is frequently used as a primary data source in urban modeling projects.
+
+\subsection{Evaluation in QGIS}
+The geographic boundaries of Nadakkave Ward were defined, and the corresponding vector layers containing building footprints, road networks, and land use were imported into QGIS \cite{ref_qgis} for spatial analysis. An overlay analysis was performed by superimposing the OSM vector data directly onto high-resolution satellite imagery base maps of the ward.
+
+\subsection{Limitations and Sparsity}
+Visual inspection in QGIS revealed significant discrepancies between the physical infrastructure visible in the satellite imagery and the recorded vector data. Large residential clusters and secondary road networks throughout Nadakkave Ward were missing from the dataset. While OSM is highly detailed for major metropolitan hubs, its crowdsourced nature resulted in severe data sparsity for this specific localized ward. Relying on OSM data would have resulted in a highly inaccurate and visibly hollow 3D visualization.
+
+As illustrated in Figure \ref{fig:osm_sparsity}, this lack of complete data necessitated the exploration of alternative data acquisition methods.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/ch03/fig_ch3_osm_vs_satellite.png}
+    \caption{OpenStreetMap data coverage revealing significant missing building footprints in Nadakkave Ward.}
+    \label{fig:osm_sparsity}
+\end{figure}
+
+\section{Building Footprint Extraction via Deep Learning}
+To overcome the limitations of the crowdsourced data, the project pivoted toward automated feature extraction using artificial intelligence. The objective was to extract building footprints directly from high-resolution satellite imagery using ArcGIS Pro \cite{ref_arcgis_pro}.
+
+\subsection{Automated Extraction Process}
+To automate the extraction process, the pre-trained "Building Footprint Extraction" Deep Learning model within ArcGIS Pro was executed across the defined geographic extent of Nadakkave Ward. This specific model utilizes convolutional neural networks (CNNs) to identify the edges of structures and generate corresponding vector polygons from the aerial imagery.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/ch03/fig_ch3_dl_raw.png}
+    \caption{Unrefined building polygons extracted via ArcGIS Pro Deep Learning model.}
+    \label{fig:dl_raw}
+\end{figure}
+
+\subsection{Manual Refinement and Validation}
+As shown in Figure \ref{fig:dl_raw}, the deep learning model successfully identified the presence of structures, but the resulting vector geometry contained frequent flaws. The model often interpreted complex rooftop structures, such as water tanks, air conditioning units, and terraced levels common in Kozhikode's architecture, as separate distinct buildings. 
+
+To ensure the structural integrity required for 3D extrusion, these raw polygons underwent a rigorous manual refinement process. Highly irregular vertices were simplified, and overlapping polygons caused by shadow interference were merged. The manually refined footprints are shown in Figure \ref{fig:dl_cleaned}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/ch03/fig_ch3_dl_cleaned.png}
+    \caption{Manually refined building footprints with corrected geometry.}
+    \label{fig:dl_cleaned}
+\end{figure}
+
+Although this methodology produced a significantly more complete dataset for Nadakkave Ward than OSM, the manual refinement process was highly time-consuming. It also introduced a margin of human error into the spatial accuracy of the building boundaries.
+
+\section{Adoption of the Official Town Planner Dataset}
+Before the finalization of the deep learning-derived dataset, the municipal Town Planner's office of Kozhikode Corporation provided an official geospatial dataset for the project. 
+
+\subsection{Dataset Advantages}
+This official dataset was rigorously evaluated against the manually refined deep learning polygons. The Town Planner dataset offered superior geographic precision and standardized building categorization. Crucially, the data was already pre-validated by municipal authorities. Because the explicit goal of a Digital Twin is to provide an authoritative representation of reality, utilizing officially sanctioned municipal data proved vastly superior to relying on crowdsourced or AI-inferred geometries.
+
+\subsection{Comparative Analysis}
+A formal comparison of the three explored data sources for Nadakkave Ward is summarized in Table \ref{tab:data_comparison}.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Comparative analysis of spatial data sources for Nadakkave Ward.}
+    \label{tab:data_comparison}
+    \input{tables/tab_ch3_data_sources.tex}
+\end{table}
+
+Based on this analysis, the deep learning extraction phase was designated as a developmental validation exercise. The Official Town Planner Dataset was selected as the definitive data source for all subsequent 3D modeling and visualization pipelines.
+
+\section{GIS Data Processing and Height Generation}
+While the Town Planner dataset provided highly accurate 2D building footprints, it lacked the direct volumetric data (absolute building height in meters) required for 3D extrusion. The dataset's attribute table did, however, contain critical municipal metadata, specifically the "Number of Floors" for each recorded structure.
+
+To generate the required Z-axis data for the 3D pipeline, a new field named \texttt{Height} was added to the GIS attribute table within ArcGIS Pro. A Field Calculator operation was executed to derive the absolute height of each building using the following urban architectural equation:
+
+\begin{equation}
+    H_{building} = N_{floors} \times h_{standard}
+    \label{eq:height}
+\end{equation}
+
+Where:
+\begin{itemize}
+    \item $H_{building}$ is the total calculated height of the building in meters.
+    \item $N_{floors}$ is the discrete number of floors extracted from the Town Planner dataset.
+    \item $h_{standard}$ is the standard assumed floor-to-ceiling height, established at 3.0 meters for the purposes of this geographic visualization \cite{ref_standard_floor_height}.
+\end{itemize}
+
+This geoprocessing step ensured that every 2D polygon possessed accurate vertical data proportional to its real-world scale in Nadakkave Ward, as illustrated in the updated attribute table in Figure \ref{fig:attribute_table}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/ch03/fig_ch3_attribute_table.png}
+    \caption{Attribute table illustrating the calculated height values derived from floor counts.}
+    \label{fig:attribute_table}
+\end{figure}
+
+\section{Data Export}
+With the 2D geometry validated and the 3D height attributes calculated, the final dataset was prepared for export. The data was exported from ArcGIS Pro as an industry-standard ESRI Shapefile (\texttt{.shp}). To guarantee spatial continuity across the pipeline—from GIS to Blender to Unreal Engine—the dataset was exported using a unified Coordinate Reference System (CRS) appropriate for the Kozhikode region. This precise CRS alignment ensured that no spatial distortion would occur during the upcoming mesh generation phase.
+
+\section{Summary}
+This chapter detailed the exhaustive data evaluation process undertaken to secure accurate building footprints for the digital twin. The limitations observed in the OSM dataset led to an experimental deep learning extraction workflow in ArcGIS Pro. While the AI successfully generated footprints, the extensive need for manual geometry refinement highlighted the inefficiencies of this approach. The acquisition of the Official Town Planner Dataset provided the necessary authoritative accuracy for Nadakkave Ward. By algorithmically generating height data from floor counts, the 2D GIS data was successfully transformed into volumetric data and exported as an ESRI Shapefile, serving as the foundational blueprint for the 3D implementation phase detailed in Chapter \ref{ch:implementation}.

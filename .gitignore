@@ -1,0 +1,90 @@
+# =========================
+# Unreal Engine 5
+# =========================
+Binaries/
+Build/
+DerivedDataCache/
+Intermediate/
+Saved/
+.vscode/
+.idea/
+*.sln
+*.suo
+*.xcworkspace
+*.DS_Store
+
+# =========================
+# Node.js / Dashboard (Vite/React)
+# =========================
+node_modules/
+dist/
+dist-ssr/
+*.local
+.env
+.env.*
+!.env.example
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =========================
+# Blender
+# =========================
+*.blend1
+*.blend2
+*.crash.txt
+*.log
+
+# =========================
+# Python / GIS Scripts
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+env/
+.env
+
+# =========================
+# GIS Data Protection (CRITICAL)
+# =========================
+# Do NOT upload proprietary municipal datasets.
+gis/arcgis/*.shp
+gis/arcgis/*.shx
+gis/arcgis/*.dbf
+gis/arcgis/*.prj
+gis/arcgis/*.sbn
+gis/arcgis/*.sbx
+gis/arcgis/*.cpg
+gis/qgis/*.gpkg
+# Note: Sample datasets in gis/sample_data/ are explicitly permitted.
+
+# =========================
+# LaTeX (Thesis)
+# =========================
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.toc
+*.lof
+*.lot
+*.xdv
+
+# =========================
+# OS Generated Files
+# =========================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

@@ -1,0 +1,86 @@
+% ===================================================
+% File: ch05_results_and_discussion.tex
+% Purpose: Discusses the final visual outputs, interactivity, advantages, and limitations of the Digital Twin.
+% Referenced by: main.tex
+% Status: Ready to Lock
+% ===================================================
+
+\chapter{Results and Discussion}
+\label{ch:results}
+
+\section{Final Digital Twin Visualization}
+The data processing and system implementation pipelines produced a functional 3D visualization of Nadakkave Ward. The resulting environment successfully translated the 2D records from the Kozhikode Corporation into an interactive spatial application.
+
+Upon initializing the Unreal Engine 5 application, the visual output of the Digital Twin demonstrated a tangible improvement over traditional flat GIS mapping. The procedural extrusion method accurately portrayed the volumetric density of the ward. Observers can immediately comprehend the spatial distribution of low-rise residential units versus larger multi-story commercial structures. 
+
+The integration of the static road networks seamlessly overlaid the foundational terrain, providing the necessary geographic context connecting the isolated building clusters. The application of category-based semantic materials proved highly effective for spatial analysis. By visually differentiating structures according to their municipal zoning designation (e.g., residential, commercial, educational), the scene enabled rapid visual inspection of the ward's infrastructure distribution without querying raw data tables.
+
+The overall geographic layout is best observed from a high-altitude perspective, as illustrated in Figure \ref{fig:ue5_overview}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/ch05/fig_ch5_ue5_overview.png}
+    \caption{High-altitude bird's-eye overview of the completed Nadakkave Ward Digital Twin.}
+    \label{fig:ue5_overview}
+\end{figure}
+
+In addition to the macroscopic view, the real-time lighting system dramatically enhanced the visual fidelity at ground level. The interaction between the Directional Light and the extruded building geometry produced physically accurate shadows, providing essential depth cues that are difficult to convey in traditional 2D GIS \cite{ref_cognitive_3d_vs_2d}. The ambient lighting from the Sky Atmosphere component grounded the scene in reality, creating a compelling environment for stakeholder presentations. The street-level visualization and lighting integration are demonstrated in Figure \ref{fig:ue5_lighting}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{figures/ch05/fig_ch5_ue5_lighting.png}
+    \caption{Street-level perspective demonstrating real-time lighting and shadow integration among the extruded buildings.}
+    \label{fig:ue5_lighting}
+\end{figure}
+
+\section{Interactive Building Information System}
+Beyond static visualization, the project successfully deployed an interactive capability designed to augment the user experience. The integration of the Web Browser Widget in UE5 allowed the Digital Twin to act as an accessible information interface rather than just a passive 3D model.
+
+During runtime, the user selection workflow operated exactly as designed. By utilizing mouse-based navigation, a user highlights and selects any specific structure within the environment. The underlying line trace logic successfully intersected the building's collision mesh to retrieve the static semantic metadata embedded during the Blender processing phase.
+
+The resulting display on the Web Browser Widget UI panel was clear and responsive. The panel immediately presented the user with the building's category and floor count. From a usability standpoint, this feature bridged the gap between a purely visual architectural model and a functional data query tool, allowing non-technical stakeholders to intuitively explore municipal data. The functional UI panel overlay is presented in Figure \ref{fig:ue5_ui}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/ch05/fig_ch5_ue5_ui.png}
+    \caption{The interactive Web Browser Widget displaying semantic data upon building selection.}
+    \label{fig:ue5_ui}
+\end{figure}
+
+\section{Discussion}
+A critical evaluation of the finalized Digital Twin reveals significant advantages for municipal planning, alongside specific technical limitations inherent to the project's defined scope.
+
+\subsection{Advantages}
+The primary advantage of this implementation is the highly accurate representation of the ward, guaranteed by the reliance on the Official Town Planner Dataset. The visualization clearly surpasses standard mapping by providing immediate volumetric context. The category-based semantic coloring proved to be a highly efficient method for communicating zoning data at a glance. The intuitive free-roaming camera and interactive information retrieval system make the application accessible to stakeholders who lack formal GIS training.
+
+\subsection{Limitations}
+Despite the visual and interactive successes, the system operates within strictly defined boundaries. As a visualization-focused application, the Digital Twin relies entirely on a static, pre-packaged dataset. There is no live bi-directional synchronization with the municipal GIS database; any changes to the physical ward require a manual recompilation of the UE5 assets. 
+
+The simulation is devoid of dynamic elements. The project scope excluded the integration of live Internet of Things (IoT) sensors, traffic simulation, moving pedestrians, or disaster prediction analytics. Visually, the environment lacks natural elements such as detailed vegetation or water simulation, which slightly diminishes the overall photorealism of the scene while keeping the computational rendering overhead low.
+
+\section{Overall Evaluation}
+The fundamental objectives defined at the project's inception were fully realized. The engineering workflow established a viable pipeline transitioning from 2D authoritative GIS data to an interactive 3D environment for Nadakkave Ward. 
+
+A summary of the project objectives against their implementation status is provided in Table \ref{tab:objective_summary}.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Summary of Project Objectives and Implementation Status.}
+    \label{tab:objective_summary}
+    \begin{tabular}{p{0.4\textwidth} p{0.25\textwidth} p{0.25\textwidth}}
+        \toprule
+        \textbf{Project Objective} & \textbf{Implementation Status} & \textbf{Remarks} \\
+        \midrule
+        Translate 2D GIS into 3D geometry & Achieved & Height calculated from Town Planner floor data. \\
+        Establish automated Blender pipeline & Achieved & Procedural script successfully extruded meshes. \\
+        Construct real-time UE5 environment & Achieved & Deployed with dynamic lighting and terrain. \\
+        Develop interactive UI for metadata & Achieved & Implemented via UE5 Web Browser Widget. \\
+        Integrate Live IoT / Traffic Simulation & N/A (Out of Scope) & Excluded from project boundaries. \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+The resulting application demonstrates significant practical usefulness for municipal visualization and stakeholder communication. While lacking real-time predictive analytics, the static Digital Twin serves as a robust proof-of-concept for modernizing urban planning methodologies through game engine technology.
+
+\section{Chapter Summary}
+This chapter presented the final outcomes of the Nadakkave Ward Digital Twin project. The visual fidelity of the 3D environment and the functionality of the interactive Web Browser Widget were analyzed, demonstrating the successful conversion of 2D municipal data into an immersive spatial tool. A critical discussion highlighted the advantages of the semantic visualization alongside the limitations of utilizing a static dataset devoid of live simulations. The subsequent chapter will conclude the report and propose avenues for future expansion and research.

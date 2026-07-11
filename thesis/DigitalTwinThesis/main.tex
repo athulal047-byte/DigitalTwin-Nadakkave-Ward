@@ -1,0 +1,53 @@
+% ===================================================
+% File: main.tex
+% Purpose: Master file that includes all frontmatter, chapters, and references.
+% Referenced by: Overleaf Compiler
+% Status: Ready to Compile
+% ===================================================
+
+\documentclass[12pt, a4paper]{report}
+
+% --- ESSENTIAL PACKAGES ---
+\usepackage[utf8]{inputenc}
+\usepackage[demo]{graphicx}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{setspace}
+
+% Line spacing for report
+\onehalfspacing
+
+\begin{document}
+
+% --- FRONT MATTER ---
+\pagenumbering{roman}
+\input{frontmatter/title_page}
+\input{frontmatter/certificate}
+\input{frontmatter/acknowledgement}
+\input{frontmatter/abstract}
+
+\input{frontmatter/toc}
+\input{frontmatter/list_of_figures}
+\input{frontmatter/list_of_tables}
+\input{frontmatter/abbreviations}
+
+% --- MAIN MATTER ---
+\clearpage
+\pagenumbering{arabic}
+
+\input{chapters/ch01_introduction}
+% Chapter 2 skipped as per user instructions
+\input{chapters/ch03_data_evaluation_and_extraction}
+\input{chapters/ch04_system_design_and_implementation}
+\input{chapters/ch05_results_and_discussion}
+\input{chapters/ch06_conclusion_and_future_scope}
+
+% --- BACK MATTER ---
+\bibliographystyle{ieeetr}
+\bibliography{references/references}
+
+\end{document}
