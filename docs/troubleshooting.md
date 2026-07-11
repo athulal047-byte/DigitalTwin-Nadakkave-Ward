@@ -1,17 +1,28 @@
-# Troubleshooting Guide
+# Troubleshooting & FAQ
 
-### Issue: The Dashboard UI is a blank white screen in UE5.
-**Cause:** The UE5 Web Browser Widget cannot find the built HTML files.
-**Fix:** Ensure you have run `npm run build` inside the `dashboard/` folder. Verify that the Blueprint URL path points exactly to the absolute path of `dashboard/dist/index.html`.
+## Common Issues
 
-### Issue: UE5 Frame Rate is extremely low (Lagging).
-**Cause:** The FBX file was imported as thousands of individual actors (draw calls) instead of a combined static mesh, or Nanite is not enabled.
-**Fix:** Re-import the FBX file. In the import dialogue, ensure **"Combine Meshes"** is checked. Alternatively, enable Nanite on the imported static mesh.
+### 1. Dashboard displays "Network Error" or endless loading spinners
+**Cause:** The React Dashboard cannot reach the Node.js API.
+**Solution:**
+- Ensure the backend server is running (`node server.js` in the `backend/` folder).
+- Check that the backend is listening on the correct port (default is `3000`).
+- Open your browser's Developer Console (F12) and check if CORS policies are blocking the request.
 
-### Issue: Blender Python script fails with "KeyError: 'Height'".
-**Cause:** The input GIS Shapefile does not have the mathematically calculated `Height` attribute in its table.
-**Fix:** Return to ArcGIS/QGIS and ensure the field is created and calculated before exporting.
+### 2. Backend throws "Password authentication failed for user 'postgres'"
+**Cause:** Incorrect database credentials in the `.env` file.
+**Solution:**
+- Open `backend/.env`.
+- Verify `DB_USER` and `DB_PASS` exactly match your local PostgreSQL 17 installation.
+- Verify `DB_NAME=nadakkave`.
 
-### Issue: Buildings are floating or clipping through the terrain.
-**Cause:** Z-fighting or incorrect origin points during export.
-**Fix:** Ensure the base terrain plane is exactly at Z=0, and that the Blender export applied all transforms (Location, Rotation, Scale) before generating the FBX.
+### 3. Missing data on specific dashboard charts
+**Cause:** The tables exist but are empty in the PostgreSQL database.
+**Solution:**
+- Check your pgAdmin or PSQL CLI. Ensure you have populated the tables (`buildings`, `citizen_profiles`) with the sample data provided during installation, or write a custom INSERT query to populate testing data.
+
+### 4. Unreal Engine Web Browser Widget shows a blank white screen
+**Cause:** The engine cannot resolve the `localhost` URL or a plugin is disabled.
+**Solution:**
+- Ensure the "Web Browser" plugin is enabled in your Unreal Engine project settings.
+- Verify that the React Dashboard is actually running (`npm run dev`) and accessible via `http://localhost:5173` (or your Vite port) before launching the UE5 simulation.

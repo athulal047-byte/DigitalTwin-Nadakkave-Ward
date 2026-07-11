@@ -1,23 +1,20 @@
-# Project Workflow Pipeline
+# Engineering Workflow
 
-This document details the exact sequence of operations required to reproduce the Digital Twin generation.
+The Digital Twin project employs a structured data pipeline to convert static 2D municipal records into an interactive 3D simulation. This pipeline ensures that geographic accuracy is maintained while minimizing the computational overhead for real-time rendering.
 
-## Phase 1: Data Acquisition
-1. Obtain 2D building footprints. *(For testing, use `gis/sample_data/ward_sample.shp`)*.
-2. Ensure the attribute table contains a `Number_of_Floors` column and a `Category` column.
-3. Open ArcGIS Pro, create a new `Height` column. Use the Field Calculator: `Height = Number_of_Floors * 3.0` (meters).
-4. Export as ESRI Shapefile ensuring a unified Coordinate Reference System (CRS).
+## Step 1: Geographic Data Evaluation (ArcGIS Pro)
+*   **Source Data:** The Official Town Planner dataset (proprietary Shapefiles containing ward infrastructure).
+*   **Processing:** The dataset is imported into ArcGIS Pro to verify the Coordinate Reference System (CRS).
+*   **Attribute Calculation:** Since real-world heights are rarely recorded, the absolute building height is mathematically approximated using the `floor_count` attribute multiplied by a standard residential ceiling height offset.
 
-## Phase 2: Mesh Generation
-1. Open Blender.
-2. Execute the `blender/scripts/extrude_ward.py` script.
-3. The script will prompt for the input `.shp` file path.
-4. Verify the geometry in the Blender viewport.
-5. Execute the export script to generate `exports/ward_mesh.fbx`.
+## Step 2: Procedural 3D Extrusion (Blender)
+*   **Ingestion:** The processed `.shp` files are imported into Blender.
+*   **Python Scripting (`bpy`):** A custom Python script automates the Z-axis extrusion of every 2D polygon footprint based on the height attribute calculated in Step 1.
+*   **Semantic Materials:** The script automatically assigns basic building materials (e.g., residential, commercial, industrial colors) based on the municipal zoning code attributes.
+*   **Optimization:** The extruded geometry is cleaned (removing redundant vertices) and exported as an optimized `.fbx` model.
 
-## Phase 3: Unreal Engine Setup
-1. Launch `unreal_engine/DigitalTwin.uproject`.
-2. Import `ward_mesh.fbx` into the Content Browser (ensure "Combine Meshes" is checked).
-3. Drag the mesh into the level at coordinate `(0,0,0)`.
-4. Ensure the Web Browser Widget UI Blueprint is referencing `dashboard/dist/index.html`.
-5. Play in Editor (PIE) to test raycast functionality.
+## Step 3: Interactive Visualization (Unreal Engine 5)
+*   **Import:** The `.fbx` model is imported into the UE5 level.
+*   **Environment Setup:** Unreal's dynamic lighting system (Lumen) and collision meshes are applied to the urban environment.
+*   **Interaction Logic:** Blueprints are configured to cast a ray from the user's camera to the environment. When a ray collides with a building mesh, the building's unique identifier is captured.
+*   **UI Invocation:** The captured building ID is passed to an embedded Web Browser Widget, which loads the React Dashboard to fetch live municipal data for that specific building.

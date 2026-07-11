@@ -1,0 +1,144 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --glass-bg: rgba(15, 18, 25, 0.75);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-highlight: rgba(255, 255, 255, 0.05);
+    --panel-bg: rgba(10, 12, 18, 0.85);
+    
+    /* The primary accent color from the image is a deep glowing indigo/purple */
+    --accent-primary: #5b21b6; /* deep violet */
+    --accent-glow: rgba(91, 33, 182, 0.5);
+    --accent-light: #8b5cf6;
+    
+    --text-primary: rgba(255, 255, 255, 0.95);
+    --text-secondary: rgba(255, 255, 255, 0.70);
+    --text-muted: rgba(255, 255, 255, 0.45);
+    
+    --signal-success: #10b981;
+    --signal-warning: #f59e0b;
+    --signal-error: #ef4444;
+  }
+
+  html, body, #root {
+    background-color: transparent !important;
+    pointer-events: none !important;
+    @apply text-[var(--text-primary)] font-sans antialiased overflow-hidden selection:bg-[var(--accent-primary)] selection:text-white;
+  }
+}
+
+@layer components {
+  /* Layout Classes */
+  .glass-panel {
+    @apply bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[24px] shadow-2xl backdrop-blur-2xl relative overflow-hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  /* The image shows a glowing active state for the sidebar */
+  .nav-item {
+    @apply text-[var(--text-secondary)] transition-all duration-300 rounded-xl hover:text-white active:scale-95;
+  }
+  .nav-item.active {
+    @apply text-white bg-gradient-to-r from-[var(--accent-primary)] to-[var(--accent-light)] border border-[var(--accent-light)] shadow-[0_0_15px_var(--accent-glow)];
+  }
+
+  /* Text Classes */
+  .text-display {
+    @apply text-3xl font-bold tracking-tight text-white leading-none;
+  }
+  .text-headline {
+    @apply text-base font-semibold tracking-wide text-white;
+  }
+  .text-body {
+    @apply text-sm font-normal text-[var(--text-secondary)] leading-relaxed;
+  }
+  .text-label {
+    @apply text-[11px] font-semibold text-[var(--text-muted)] uppercase tracking-widest block mb-1;
+  }
+
+  /* Custom Scrollbar to match modern UI */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--glass-border);
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+  }
+  
+  /* Utilities for the UI */
+  .hud-btn {
+    @apply bg-[var(--glass-highlight)] hover:bg-[var(--glass-border)] border border-[var(--glass-border)] text-white rounded-lg flex items-center justify-center transition-all active:scale-95;
+  }
+
+  /* Circular Progress */
+  .circular-chart {
+    display: block;
+    margin: 0 auto;
+    max-width: 80%;
+    max-height: 250px;
+  }
+  .circle-bg {
+    fill: none;
+    stroke: var(--glass-highlight);
+    stroke-width: 3.8;
+  }
+  .circle {
+    fill: none;
+    stroke-width: 2.8;
+    stroke-linecap: round;
+    animation: progress 1s ease-out forwards;
+  }
+  @keyframes progress {
+    0% {
+      stroke-dasharray: 0 100;
+    }
+  }
+
+  /* Impeccable Delight Animations */
+  .animate-panel-in {
+    animation: panel-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+  }
+  @keyframes panel-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px) scale(0.99);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .animate-glass-pulse {
+    animation: glass-pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  @keyframes glass-pulse {
+    0%, 100% {
+      opacity: 0.5;
+      filter: drop-shadow(0 0 2px var(--accent-glow));
+    }
+    50% {
+      opacity: 1;
+      filter: drop-shadow(0 0 10px var(--accent-primary));
+    }
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}

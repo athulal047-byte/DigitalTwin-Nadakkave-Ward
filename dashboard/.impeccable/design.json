@@ -1,0 +1,275 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-06-20T00:00:00.000Z",
+  "title": "Design System: Nadakkavu Digital Twin Platform",
+  "extensions": {
+    "colorMeta": {
+      "shell-bg": {
+        "role": "neutral",
+        "displayName": "Midnight Shell",
+        "canonical": "oklch(14% 0.02 260)",
+        "tonalRamp": [
+          "oklch(8% 0.015 260)",
+          "oklch(10% 0.018 260)",
+          "oklch(12% 0.02 260)",
+          "oklch(14% 0.02 260)",
+          "oklch(18% 0.022 260)",
+          "oklch(22% 0.025 260)",
+          "oklch(30% 0.03 260)",
+          "oklch(45% 0.035 260)"
+        ]
+      },
+      "panel-bg": {
+        "role": "neutral",
+        "displayName": "Panel Slate",
+        "canonical": "oklch(16% 0.025 260)",
+        "tonalRamp": [
+          "oklch(10% 0.02 260)",
+          "oklch(12% 0.022 260)",
+          "oklch(14% 0.024 260)",
+          "oklch(16% 0.025 260)",
+          "oklch(20% 0.028 260)",
+          "oklch(26% 0.03 260)",
+          "oklch(35% 0.032 260)",
+          "oklch(50% 0.035 260)"
+        ]
+      },
+      "accent-primary": {
+        "role": "primary",
+        "displayName": "Sky Signal",
+        "canonical": "oklch(78% 0.14 230)",
+        "tonalRamp": [
+          "oklch(25% 0.08 230)",
+          "oklch(35% 0.10 230)",
+          "oklch(45% 0.12 230)",
+          "oklch(55% 0.13 230)",
+          "oklch(65% 0.14 230)",
+          "oklch(72% 0.14 230)",
+          "oklch(78% 0.14 230)",
+          "oklch(88% 0.10 230)"
+        ]
+      },
+      "signal-success": {
+        "role": "secondary",
+        "displayName": "Emerald Live",
+        "canonical": "oklch(78% 0.16 160)",
+        "tonalRamp": [
+          "oklch(25% 0.08 160)",
+          "oklch(35% 0.10 160)",
+          "oklch(45% 0.12 160)",
+          "oklch(55% 0.14 160)",
+          "oklch(65% 0.15 160)",
+          "oklch(72% 0.16 160)",
+          "oklch(78% 0.16 160)",
+          "oklch(88% 0.12 160)"
+        ]
+      },
+      "signal-warning": {
+        "role": "secondary",
+        "displayName": "Amber Alert",
+        "canonical": "oklch(84% 0.16 85)",
+        "tonalRamp": [
+          "oklch(30% 0.08 85)",
+          "oklch(40% 0.10 85)",
+          "oklch(50% 0.12 85)",
+          "oklch(60% 0.14 85)",
+          "oklch(70% 0.15 85)",
+          "oklch(78% 0.16 85)",
+          "oklch(84% 0.16 85)",
+          "oklch(92% 0.12 85)"
+        ]
+      },
+      "signal-violet": {
+        "role": "tertiary",
+        "displayName": "Violet Trace",
+        "canonical": "oklch(72% 0.18 300)",
+        "tonalRamp": [
+          "oklch(25% 0.10 300)",
+          "oklch(35% 0.12 300)",
+          "oklch(45% 0.14 300)",
+          "oklch(55% 0.16 300)",
+          "oklch(62% 0.17 300)",
+          "oklch(68% 0.18 300)",
+          "oklch(72% 0.18 300)",
+          "oklch(85% 0.14 300)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "KPI Value",
+        "purpose": "Large tabular metric numbers in KPI cards only."
+      },
+      "headline": {
+        "displayName": "App Title",
+        "purpose": "Topbar platform name."
+      },
+      "title": {
+        "displayName": "Panel Title",
+        "purpose": "Detail panel headers and entity IDs."
+      },
+      "body": {
+        "displayName": "UI Body",
+        "purpose": "Table cells, nav items, filters."
+      },
+      "label": {
+        "displayName": "Section Label",
+        "purpose": "Uppercase tracked eyebrows at section boundaries."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "ease-standard",
+        "value": "cubic-bezier(0.25, 0.1, 0.25, 1)",
+        "purpose": "Default 150ms transitions on hover and focus states."
+      },
+      {
+        "name": "pulse-loading",
+        "value": "animate-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "purpose": "Skeleton loading blocks. Disable under prefers-reduced-motion."
+      }
+    ],
+    "breakpoints": [
+      { "name": "xl", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Affirmative action — Edit, Save, Confirm.",
+      "html": "<button class=\"ds-btn-primary\">Edit</button>",
+      "css": ".ds-btn-primary { background: rgba(14, 165, 233, 0.10); color: #38bdf8; border: 1px solid rgba(14, 165, 233, 0.30); border-radius: 4px; padding: 6px 12px; font-family: Inter, Arial, sans-serif; font-size: 10px; font-weight: 500; cursor: pointer; transition: background 0.15s ease, border-color 0.15s ease; } .ds-btn-primary:hover { background: rgba(14, 165, 233, 0.20); border-color: rgba(14, 165, 233, 0.45); } .ds-btn-primary:focus-visible { outline: 2px solid rgba(56, 189, 248, 0.50); outline-offset: 2px; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Secondary actions — Report, History, Cancel.",
+      "html": "<button class=\"ds-btn-ghost\">Report</button>",
+      "css": ".ds-btn-ghost { background: transparent; color: rgba(255, 255, 255, 0.40); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 4px; padding: 6px 12px; font-family: Inter, Arial, sans-serif; font-size: 10px; font-weight: 500; cursor: pointer; transition: color 0.15s ease, border-color 0.15s ease; } .ds-btn-ghost:hover { color: rgba(255, 255, 255, 0.60); border-color: rgba(255, 255, 255, 0.20); } .ds-btn-ghost:focus-visible { outline: 2px solid rgba(255, 255, 255, 0.25); outline-offset: 2px; }"
+    },
+    {
+      "name": "KPI Card",
+      "kind": "card",
+      "refersTo": "kpi-card",
+      "description": "Metric summary tile on dashboard overview.",
+      "html": "<div class=\"ds-kpi-card\"><div class=\"ds-kpi-label\">Total buildings</div><div class=\"ds-kpi-value\">12,847</div><div class=\"ds-kpi-sub\">across 4 wards</div></div>",
+      "css": ".ds-kpi-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 8px; padding: 12px; font-family: Inter, Arial, sans-serif; transition: border-color 0.15s ease; } .ds-kpi-card:hover { border-color: rgba(255, 255, 255, 0.10); } .ds-kpi-label { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255, 255, 255, 0.25); margin-bottom: 6px; } .ds-kpi-value { font-size: 24px; font-weight: 700; color: #38bdf8; font-variant-numeric: tabular-nums; line-height: 1.2; } .ds-kpi-sub { font-size: 10px; color: rgba(255, 255, 255, 0.25); margin-top: 2px; }"
+    },
+    {
+      "name": "Nav Item Active",
+      "kind": "nav",
+      "refersTo": "nav-item-active",
+      "description": "Currently selected sidebar route.",
+      "html": "<a class=\"ds-nav-item ds-nav-active\" href=\"#\"><svg class=\"ds-nav-icon\" width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"3\" y=\"3\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"14\" y=\"3\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"3\" y=\"14\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"14\" y=\"14\" width=\"7\" height=\"7\" rx=\"1\"/></svg>Overview</a>",
+      "css": ".ds-nav-item { display: flex; align-items: center; gap: 10px; padding: 8px 12px; margin: 0 6px; border-radius: 4px; font-family: Inter, Arial, sans-serif; font-size: 12px; text-decoration: none; transition: all 0.15s ease; } .ds-nav-active { background: rgba(14, 165, 233, 0.10); color: #38bdf8; border: 1px solid rgba(14, 165, 233, 0.20); } .ds-nav-icon { opacity: 0.7; flex-shrink: 0; }"
+    },
+    {
+      "name": "Nav Item Default",
+      "kind": "nav",
+      "refersTo": "nav-item-default",
+      "description": "Inactive sidebar route.",
+      "html": "<a class=\"ds-nav-item ds-nav-default\" href=\"#\"><svg class=\"ds-nav-icon\" width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M3 21h18M5 21V7l8-4 8 4v14\"/></svg>Buildings</a>",
+      "css": ".ds-nav-item { display: flex; align-items: center; gap: 10px; padding: 8px 12px; margin: 0 6px; border-radius: 4px; font-family: Inter, Arial, sans-serif; font-size: 12px; text-decoration: none; transition: all 0.15s ease; } .ds-nav-default { color: rgba(255, 255, 255, 0.35); border: 1px solid transparent; } .ds-nav-default:hover { color: rgba(255, 255, 255, 0.60); background: rgba(255, 255, 255, 0.04); } .ds-nav-icon { opacity: 0.7; flex-shrink: 0; }"
+    },
+    {
+      "name": "Search Input",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "Filter bar text field for tables and lists.",
+      "html": "<input class=\"ds-input\" type=\"text\" placeholder=\"Search by ID, road, locality…\" />",
+      "css": ".ds-input { width: 100%; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 4px; padding: 6px 12px; font-family: Inter, Arial, sans-serif; font-size: 12px; color: rgba(255, 255, 255, 0.70); outline: none; transition: border-color 0.15s ease; } .ds-input::placeholder { color: rgba(255, 255, 255, 0.20); } .ds-input:focus { border-color: rgba(14, 165, 233, 0.40); }"
+    },
+    {
+      "name": "Status Badge",
+      "kind": "chip",
+      "refersTo": "status-badge",
+      "description": "Building or entity status indicator.",
+      "html": "<span class=\"ds-status-badge ds-status-occupied\"><span class=\"ds-status-dot\"></span>Occupied</span>",
+      "css": ".ds-status-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 4px; font-family: Inter, Arial, sans-serif; font-size: 10px; font-weight: 500; } .ds-status-occupied { background: rgba(52, 211, 153, 0.12); color: #34d399; border: 1px solid rgba(52, 211, 153, 0.25); } .ds-status-dot { width: 4px; height: 4px; border-radius: 50%; background: currentColor; }"
+    },
+    {
+      "name": "Ward Chip Active",
+      "kind": "chip",
+      "refersTo": "ward-chip",
+      "description": "Selected ward filter in sidebar.",
+      "html": "<button class=\"ds-ward-chip ds-ward-active\">All wards</button>",
+      "css": ".ds-ward-chip { padding: 2px 8px; border-radius: 4px; font-family: Inter, Arial, sans-serif; font-size: 10px; border: none; cursor: pointer; transition: all 0.15s ease; background: transparent; color: rgba(255, 255, 255, 0.40); } .ds-ward-chip:hover { color: rgba(255, 255, 255, 0.70); background: rgba(255, 255, 255, 0.05); } .ds-ward-active { color: #38bdf8; background: rgba(14, 165, 233, 0.10); }"
+    },
+    {
+      "name": "Detail Panel Tab",
+      "kind": "nav",
+      "refersTo": "nav-item-active",
+      "description": "Tab bar in building detail panel.",
+      "html": "<div class=\"ds-tabs\"><button class=\"ds-tab ds-tab-active\">Details</button><button class=\"ds-tab\">Infrastructure</button><button class=\"ds-tab\">History</button></div>",
+      "css": ".ds-tabs { display: flex; border-bottom: 1px solid rgba(255, 255, 255, 0.06); font-family: Inter, Arial, sans-serif; } .ds-tab { flex: 1; padding: 8px 0; font-size: 10px; font-weight: 500; text-transform: capitalize; background: none; border: none; border-bottom: 1px solid transparent; cursor: pointer; color: rgba(255, 255, 255, 0.25); transition: color 0.15s ease; } .ds-tab:hover { color: rgba(255, 255, 255, 0.50); } .ds-tab-active { color: #38bdf8; border-bottom-color: #0ea5e9; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Ward Telemetry Grid",
+    "overview": "Nadakkavu is a municipal digital-twin dashboard where design serves the data, not the other way around. The interface reads as an always-on operator desk: a dark midnight shell holding a lattice of ward metrics, infrastructure coverage, and domain modules. Visual hierarchy comes from size, weight, and tabular alignment — not decoration. Surfaces are structurally flat. Depth is communicated through hairline borders and stepped opacity layers — never drop shadows.",
+    "keyCharacteristics": [
+      "Dark command-center shell with a second neutral layer for sidebar, topbar, and detail panels",
+      "Fixed rem type scale tuned for density (9–14px UI range, 24px KPI values)",
+      "Multi-signal semantic palette for data categories (success, warning, domain colors)",
+      "Hairline borders (rgba(255,255,255,0.06)) as the primary depth mechanism",
+      "Skeleton loading states, not mid-content spinners",
+      "tabular-nums on all metrics; monospace for entity IDs"
+    ],
+    "rules": [
+      {
+        "name": "The One Voice Rule",
+        "body": "Sky (#38bdf8) is the only accent on navigation and chrome. Semantic colors (emerald, amber, violet) appear only on data, status indicators, and chart elements — never on inactive buttons or decorative borders.",
+        "section": "colors"
+      },
+      {
+        "name": "The No-Cream Rule",
+        "body": "Body backgrounds stay in the midnight navy family. Warm sand, cream, or paper tones are prohibited — warmth lives in data semantics and Kerala-specific content, not in the shell.",
+        "section": "colors"
+      },
+      {
+        "name": "The Fixed Scale Rule",
+        "body": "Product UI uses fixed rem sizes, not fluid clamp headings. A sidebar-adjacent h1 that shrinks is worse than a consistent 14px title.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Rule",
+        "body": "All numeric metrics use tabular-nums. KPI values, ward counts, percentages, and table numbers must align for scan comparison.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat-By-Default Rule",
+        "body": "Surfaces are flat at rest. The only depth cue is the hairline border plus one opacity step. If you reach for box-shadow, use a border instead.",
+        "section": "elevation"
+      },
+      {
+        "name": "The No-Glass Rule",
+        "body": "Backdrop blur and glassmorphism are prohibited unless serving a specific overlay (modal scrim). Decorative glass cards are never the default.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do use sky (#38bdf8) exclusively for primary navigation, selection, and affirmative actions.",
+      "Do reserve emerald, amber, and violet for data semantics — status, coverage, category breakdowns.",
+      "Do use hairline borders (rgba(255,255,255,0.06)) and opacity-layer surfaces for all depth.",
+      "Do apply tabular-nums to every numeric metric and font-mono to entity IDs.",
+      "Do ship skeleton loading states (pulsing opacity blocks) test.",
+      "Do keep section labels (9px uppercase) to genuine section boundaries — one per panel, not per card.",
+      "Do respect prefers-reduced-motion: reduce — replace pulse animations with static states."
+    ],
+    "donts": [
+      "Don't use generic SaaS dashboard patterns — cream/warm backgrounds, hero-metric card grids, eyebrow labels on every section, interchangeable startup aesthetic.",
+      "Don't use sci-fi / cyberpunk command center tropes — neon overload, holographic gimmicks, decorative glow that obscures data.",
+      "Don't reproduce legacy government portal patterns — cluttered tables with no hierarchy, dated UI, bureaucratic density without structure.",
+      "Don't borrow consumer map app casualness — Google Maps simplicity is too undifferentiated for institutional governance.",
+      "Don't use border-left or border-right greater than 1px as a colored accent stripe on cards or list items.",
+      "Don't use gradient text (background-clip: text) for emphasis — use weight and size.",
+      "Don't use glassmorphism or backdrop blur as a default card treatment.",
+      "Don't use emoji as navigation icons when Lucide is available — maintain consistent icon vocabulary.",
+      "Don't animate layout properties — use opacity and color transitions only, 150–250ms ease-out."
+    ]
+  }
+}

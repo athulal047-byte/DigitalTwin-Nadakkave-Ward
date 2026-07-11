@@ -1,33 +1,49 @@
-# Installation & Setup Guide
+# Installation Guide
+
+This guide covers the local setup of the three primary subsystems: Database, Backend API, and Frontend Dashboard. 
+*(Note: Setting up the Unreal Engine project requires Epic Games Launcher and UE 5.4+).*
 
 ## Prerequisites
-- **Unreal Engine 5.0+**
-- **Blender 3.6+**
-- **Node.js 18+** (for the dashboard)
-- **Git**
+*   Node.js (v18 or higher)
+*   PostgreSQL 17
+*   Git
 
-## Step 1: Clone the Repository
-```bash
-git clone https://github.com/yourusername/DigitalTwin-Nadakkave-Ward-GitHub.git
-cd DigitalTwin-Nadakkave-Ward-GitHub
-```
+## 1. Database Setup
+1. Open pgAdmin 4 or your PSQL CLI.
+2. Create a new database named `nadakkave`.
+3. Locate the SQL schema files inside the `database/` directory.
+4. Execute the SQL files to generate the required tables (`buildings`, `citizen_profiles`, etc.).
 
-## Step 2: Build the Dashboard UI
-Unreal Engine requires the dashboard to be pre-built.
-```bash
-cd dashboard
-npm install
-npm run build
-```
+## 2. Backend API Setup
+1. Open a terminal and navigate to the backend directory:
+   ```bash
+   cd backend
+   ```
+2. Install the necessary Node.js dependencies:
+   ```bash
+   npm install
+   ```
+3. Copy the `.env.example` to `.env` and fill in your PostgreSQL credentials:
+   ```bash
+   cp .env.example .env
+   ```
+4. Start the Express server:
+   ```bash
+   node server.js
+   ```
+   *The server should now be listening on `http://localhost:3000`.*
 
-## Step 3: Run Unreal Engine
-1. Launch Unreal Engine 5.
-2. Select "Browse" and locate the `unreal_engine/DigitalTwin.uproject` file.
-3. If prompted to rebuild missing modules, select "Yes".
-4. Once loaded, press **Play** to explore the environment.
-
-## Optional: Reprocess Data
-If you wish to run the procedural generation yourself:
-1. Open Blender.
-2. Open the scripting tab and load `blender/scripts/extrude_ward.py`.
-3. Point the script to the sample data in `gis/sample_data/`.
+## 3. Frontend Dashboard Setup
+1. Open a new terminal window and navigate to the dashboard directory:
+   ```bash
+   cd dashboard
+   ```
+2. Install the React dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the Vite development server:
+   ```bash
+   npm run dev
+   ```
+4. Open the provided localhost URL in your browser. The dashboard should now successfully query your running Node.js backend to populate the UI.

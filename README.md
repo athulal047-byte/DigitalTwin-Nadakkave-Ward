@@ -1,87 +1,120 @@
-# Digital Twin of Nadakkave Ward 🏙️
+# Nadakkave Ward Digital Twin
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Unreal Engine](https://img.shields.io/badge/Unreal_Engine-5.0+-black?logo=unrealengine)](https://www.unrealengine.com/)
-[![Blender](https://img.shields.io/badge/Blender-3.6+-orange?logo=blender)](https://www.blender.org/)
-[![React](https://img.shields.io/badge/React-18.3-61DAFB?logo=react&logoColor=black)](https://reactjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)](https://reactjs.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-Express-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![Unreal Engine](https://img.shields.io/badge/Unreal_Engine-5.4-000000?logo=unrealengine&logoColor=white)](https://www.unrealengine.com/)
 
-An interactive, high-fidelity 3D Digital Twin of Nadakkave Ward (Kozhikode Corporation), bridging the gap between raw 2D Geographic Information Systems (GIS) and real-time visualization.
+## Project Overview
 
-## 📖 Project Overview
-Traditional municipal planning relies heavily on flat, 2D GIS mapping, which often fails to convey the volumetric density and spatial complexity of modern infrastructure. This project engineers a complete data-to-visualization pipeline that translates official 2D municipal records into an immersive 3D environment using **Unreal Engine 5**. 
+This repository contains the source code for the Nadakkave Ward Digital Twin. The system processes municipal geographic data into an interactive 3D simulation using Unreal Engine 5. 
 
-By leveraging procedural generation in **Blender** and a **React-based UI**, this tool allows urban planners to visually analyze infrastructure categories and retrieve semantic building metadata dynamically.
+To bridge the 3D environment with the project database, the engine embeds a React-based web dashboard. When a user interacts with a building in the simulation, the dashboard interactively queries a Node.js/PostgreSQL backend to retrieve building and municipal information stored in the project database.
 
-## ✨ Implemented Features
-- **Procedural 3D Generation:** Algorithmic extrusion of 2D GIS footprints into accurate 3D volumetric structures based on municipal floor-count data.
-- **Category-Based Semantic Materials:** Dynamic color-coding of buildings based on zoning designations (e.g., residential, commercial, educational) for rapid visual analysis.
-- **High-Fidelity UE5 Rendering:** Utilizes Unreal Engine 5's dynamic Directional Light, Sky Light, and Sky Atmosphere for physically accurate environmental shadowing.
-- **Interactive Information Dashboard:** A raycast-driven React application running natively inside UE5 (via the Web Browser Widget) that displays semantic metadata when structures are clicked.
+## System Architecture
 
-> **Note on Scope:** This repository represents the V1 Visualization Minimum Viable Product (MVP). It explicitly *excludes* dynamic data simulations such as Live IoT, traffic simulation, water physics, and disaster prediction.
+The project follows a decoupled, three-tier architecture separating the rendering engine from the data layer:
 
-## 🏗️ System Architecture & Workflow
+```text
+[ Unreal Engine 5 ] <--- Raycast ID ---> [ React Dashboard ]
+      (3D Client)                             (UI Client)
+                                                  │
+                                            HTTP REST API
+                                                  ▼
+                                       [ Node.js / Express ]
+                                            (API Server)
+                                                  │
+                                             SQL Queries
+                                                  ▼
+                                      [ PostgreSQL + PostGIS ]
+                               (113-Table Spatial and Municipal DB)
+```
 
-The architecture is built on a robust, unidirectional data pipeline:
+- **Presentation (UE5 & React):** Unreal Engine handles high-poly rendering, lighting, and collision. The React frontend handles UI state and data visualization.
+- **Application (Node.js):** An Express REST API that manages routing and database transactions.
+- **Data (PostgreSQL & PostGIS):** A PostgreSQL + PostGIS database containing 113 relational tables for spatial and municipal information.
 
-1. **GIS Processing (ArcGIS Pro):** 
-   - Evaluated crowdsourced OpenStreetMap (OSM) data and found it sparse.
-   - Tested Deep Learning footprint extraction (produced rooftop artifacts).
-   - *Final Solution:* Processed the Official Town Planner Dataset, adding explicit `Height` attributes via floor-count multiplication.
-2. **Procedural Generation (Blender):**
-   - Ingested the ESRI Shapefile using a Python API.
-   - Procedurally extruded footprints and assigned category-based semantic materials.
-   - Exported optimized `.fbx` assets.
-3. **Real-time Rendering & UI (Unreal Engine 5 & React):**
-   - Imported meshes, mapped terrain, and established road networks.
-   - Built an interactive overlay using Vite/React, embedded via the UE5 Web Browser Widget.
+## Engineering Workflow
 
-## 📂 Repository Structure
+The pipeline for converting 2D geographic data into the real-time simulation consists of three phases:
 
-This is a monorepo containing all discrete components of the pipeline:
+1. **GIS Processing:** Evaluated OSM and ArcGIS Deep Learning before receiving the official Town Planner dataset. Processed the dataset in ArcGIS Pro to verify the coordinate reference systems (CRS), generated a mathematically approximated building height attribute using floor counts, and exported the final Shapefile.
+2. **Procedural Generation:** Imported the processed `.shp` data into Blender. A custom Python script (`bpy`) automated the 3D extrusion of building footprints and programmatically assigned semantic materials based on zoning codes, exporting the result as optimized `.fbx` meshes.
+3. **Engine Integration:** Imported the geometry into UE5. Configured Lumen lighting, collision meshes, and Raycasting blueprints to pass selected building IDs directly to the embedded web widget.
+
+## Technologies Used
+
+*   **GIS & Modeling:** ArcGIS Pro, Blender, Python
+*   **Engine:** Unreal Engine 5.4 (Blueprints, Web Browser Widget)
+*   **Frontend:** React 19, TypeScript, Vite, Tailwind CSS v4
+*   **Backend:** Node.js, Express.js
+*   **Database:** PostgreSQL 17, PostGIS
+
+## Repository Structure
 
 ```text
 DigitalTwin-Nadakkave-Ward-GitHub/
-├── blender/          # Procedural extrusion Python scripts and .blend templates
-├── dashboard/        # React/Vite/TypeScript source code for the interactive UI
-├── docs/             # Technical architecture and workflow documentation
-├── gis/              # GIS evaluation scripts and sample datasets
-├── thesis/           # Full LaTeX source code for the B.Tech internship report
-└── unreal_engine/    # Unreal Engine 5 project files (Content, Config, Source)
+├── backend/          # Node.js API server, routes, and config
+├── blender/          # Procedural generation scripts and .blend files
+├── dashboard/        # React frontend codebase
+├── database/         # PostgreSQL schema and migration scripts
+├── docs/             # Technical architecture and setup documentation
+├── gis/              # GIS workspace and shapefile references
+├── unreal_engine/    # UE5 project source files
+└── README.md
 ```
 
-## 🚀 Quick Start & Installation
+## Installation
 
-### 1. Dashboard UI
-The interactive UI panel must be built before Unreal Engine can load it.
+Detailed guides for each module are located in the `docs/` directory.
+
+### 1. Database & Backend
+```bash
+cd backend
+npm install
+cp .env.example .env  # Configure DB_USER, DB_PASS, and JWT_SECRET
+node server.js
+```
+*Note: Ensure PostgreSQL 17 is running locally and the `nadakkave` database schemas have been migrated.*
+
+### 2. Dashboard
 ```bash
 cd dashboard
 npm install
-npm run build
+npm run dev
 ```
 
-### 2. Unreal Engine 5
-1. Launch Unreal Engine 5.
-2. Open the project file located in `unreal_engine/DigitalTwin.uproject`.
-3. The engine will automatically detect the built React assets in the `dashboard/dist` folder for the Web Browser Widget.
+### 3. Unreal Engine
+1. Launch Unreal Engine 5.4 via the Epic Games Launcher.
+2. Open `unreal_engine/nadakkave.uproject`.
+3. Allow shaders to compile before entering Play-In-Editor (PIE) mode.
 
-## 📸 Screenshots
-*(Note: Replace these placeholder paths with actual image links after pushing to GitHub)*
+## Screenshots
 
-- **Final UE5 Bird's-eye View:** `assets/screenshots/ue5_overview.png` - Demonstrates the scale and density of the extruded ward.
-- **Street-level Lighting:** `assets/screenshots/ue5_lighting.png` - Highlights the real-time shadow computation.
-- **Interactive Dashboard UI:** `assets/screenshots/ue5_ui.png` - Shows the Raycast selection and the embedded React widget.
-- **ArcGIS Attribute Processing:** `assets/screenshots/arcgis_height.png` - Proves the mathematical derivation of Z-axis data from 2D records.
+Screenshots demonstrating the GIS workflow, Unreal Engine environment, dashboard, and system architecture will be added in a future update.
 
-## 🛡️ Data Privacy & Licensing
-**Codebase:** The scripts, UE5 project, and React dashboard are released under the [MIT License](LICENSE).
-**GIS Data:** The Official Town Planner Dataset used in the final thesis is proprietary to the Kozhikode Corporation and is **not included** in this repository. All provided scripts operate on the synthesized open-source datasets located in `gis/sample_data/`.
+## Data Privacy
 
-## 🔮 Future Scope
-- Live API integration for real-time GIS database synchronization.
-- Integration of IoT sensor arrays for structural health monitoring.
-- Pixel Streaming deployment to WebGL for zero-install municipal access.
+This repository contains the software architecture, database schemas, and procedural frameworks. The official Town Planner dataset and live municipal records are proprietary to the Kozhikode Corporation and are strictly excluded. The database and visualizer use sample or anonymized structural data for demonstration purposes.
 
----
-*Developed as a B.Tech Summer Internship Project at the National Institute of Technology, Calicut.*
+## Current Scope
+
+The current build successfully renders the static built environment of Nadakkave Ward and provides a functional UI to query associated municipal records stored in the project database.
+
+## Future Work
+
+*   **IoT Integration:** Pipe live sensor data (traffic, air quality, water flow) into the event broker.
+*   **Disaster Simulation:** Overlay dynamic weather and flood level predictions within the UE5 environment.
+*   **Cloud Deployment:** Migrate the local Node.js API and PostgreSQL database to a managed cloud infrastructure (AWS/Azure).
+
+## Author
+
+**Athul A L**  
+B.Tech Computer Science and Engineering (Artificial Intelligence & Machine Learning)  
+Sree Chitra Thirunal College of Engineering  
+Summer Internship – National Institute of Technology Calicut  
+
+## License
+
+Released under the [MIT License](LICENSE).
