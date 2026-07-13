@@ -1,25 +1,21 @@
-# Contributing to the Nadakkave Ward Digital Twin
+# Contributing to the Nadakkavu Ward Digital Twin
 
-Thank you for your interest in contributing to this project! This Digital Twin was originally developed as a B.Tech Summer Internship Project, but open-source contributions to expand its capabilities are welcome.
+First, thank you for your interest in expanding this platform! I built this during my summer internship at NIT Calicut to establish a highly scalable, decoupled baseline for municipal digital twins. There are many massive avenues for future development (like Cloud Pixel Streaming and Live IoT telemetry).
+
+## System Boundaries
+Because this project utilizes a strict decoupled architecture to protect rendering performance, please keep the following rules in mind:
+
+1. **Do NOT Connect UE5 to PostgreSQL Directly:** 
+   Never write Blueprint or C++ logic in Unreal Engine that talks directly to the database. Always route requests through the Node.js API middleware. If you block the rendering thread while waiting for a slow network request, the 3D application will freeze.
+   
+2. **Keep the Spatial Geometry Decoupled:** 
+   If you update the physical topology (e.g., adding a new building mesh), you must update the core Shapefiles, run the procedural Blender script, and re-export the `.fbx`. The spatial collision relies entirely on static compilation right now.
+
+3. **Respect Data Privacy:** 
+   Never commit raw Town Planner Shapefiles or citizen `.dbf` records to this repository. The database should only ever be populated using the anonymized mock seeders found in `database/migrations`.
 
 ## How to Contribute
-
-### 1. Reporting Bugs
-If you find a bug in the procedural Blender scripts, the Unreal Engine blueprints, or the React dashboard, please open an issue using the GitHub Issue Tracker. Include:
-- A clear description of the issue.
-- Steps to reproduce it.
-- Your OS and software versions (UE5, Blender, Node).
-
-### 2. Suggesting Enhancements
-The current project scope is **visualization only**. Features like Live IoT, Traffic Simulation, and Disaster Analytics were explicitly excluded from the MVP. However, architectural proposals to integrate these are welcome. Please open an issue to discuss major architectural changes before submitting a Pull Request.
-
-### 3. Submitting Pull Requests
 1. Fork the repository.
-2. Create a new branch (`git checkout -b feature/your-feature-name`).
-3. Make your changes in the appropriate directory (`unreal_engine/`, `dashboard/`, `blender/`, etc.).
-4. Commit your changes with descriptive messages (`git commit -m 'feat: Add dynamic sun positioning'`).
-5. Push to your branch (`git push origin feature/your-feature-name`).
-6. Open a Pull Request.
-
-## Data Policy
-**DO NOT** submit Pull Requests containing proprietary municipal GIS data. All development and testing must be performed using the synthesized `.shp` files provided in `gis/sample_data/` or publicly available OpenStreetMap (OSM) exports. PRs containing official Kozhikode Corporation records will be immediately rejected and deleted to comply with data privacy policies.
+2. Spin up the Node.js backend (`cd backend && npm start`) and ensure your local PostgreSQL 17 instance is running the migrations.
+3. Test your React UI changes inside the `dashboard/` folder using `npm run dev` before testing them inside the Unreal Engine Web Browser Widget.
+4. Submit a Pull Request documenting exactly what architectural module you modified.

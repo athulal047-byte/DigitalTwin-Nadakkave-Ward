@@ -31,7 +31,7 @@ export default function Topbar() {
 
       api.getUnreadCount()
         .then(data => setUnreadCount(data.count))
-        .catch(() => {});
+        .catch(() => { });
     };
 
     fetchData();
@@ -54,7 +54,7 @@ export default function Topbar() {
 
   return (
     <header className="h-16 flex items-center justify-between pointer-events-auto" aria-label="Command center topbar">
-      
+
       {/* Left: Logo Card */}
       <div className="glass-panel flex items-center gap-3 px-4 h-full">
         <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--accent-light)] to-[var(--accent-primary)] flex items-center justify-center shadow-[0_0_15px_var(--accent-glow)]">
@@ -65,8 +65,8 @@ export default function Topbar() {
           </svg>
         </div>
         <div>
-          <h1 className="text-sm font-semibold text-white leading-tight">Smart City Platform</h1>
-          <p className="text-[10px] text-[var(--text-secondary)] leading-tight">Nadakkavu Municipality</p>
+          <h1 className="text-sm font-semibold text-white leading-tight">Digital Twin </h1>
+          <p className="text-[10px] text-[var(--text-secondary)] leading-tight">Nadakkave Ward</p>
         </div>
       </div>
 
@@ -124,7 +124,7 @@ export default function Topbar() {
 
         {/* User Profile */}
         <div className="relative h-full flex items-center">
-          <button 
+          <button
             onClick={() => setProfileOpen(!profileOpen)}
             className={`h-12 glass-panel flex items-center gap-3 px-3 transition-all duration-300 active:scale-95 ${profileOpen ? 'text-white border-white/20 shadow-[0_0_15px_var(--accent-glow)] bg-white/10' : 'text-[var(--text-secondary)] hover:text-white hover:bg-white/5'}`}
           >
@@ -136,7 +136,7 @@ export default function Topbar() {
               <div className={`text-[10px] ${badge.color} leading-tight`}>{badge.label}</div>
             </div>
           </button>
-          
+
           {profileOpen && (
             <div className="absolute top-[60px] right-0 w-64 glass-panel flex flex-col p-2 z-50 animate-panel-in">
               <div className="px-3 py-3 border-b border-[var(--glass-border)] mb-1">
@@ -157,7 +157,7 @@ export default function Topbar() {
             </div>
           )}
         </div>
-        
+
         <NotificationDrawer isOpen={notificationsOpen} onClose={() => setNotificationsOpen(false)} />
       </div>
     </header>

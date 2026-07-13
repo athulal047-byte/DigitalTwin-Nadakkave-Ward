@@ -1,19 +1,17 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
+All notable changes to the Nadakkavu Ward Digital Twin project will be documented in this file. 
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-## [1.0.0] - 2026-07-11
-
+## [1.0.0] - Summer Internship Release
 ### Added
-- **Monorepo Architecture:** Established the complete open-source repository structure.
-- **Thesis:** Added the finalized B.Tech Summer Internship Report (`thesis/DigitalTwinThesis`).
-- **Unreal Engine 5 Environment:** Configured the core 3D visualization scene (Directional Light, Sky Atmosphere).
-- **Blender Automation:** Added procedural Python scripts for extruding 2D GIS footprints into 3D volumetric meshes based on the `Height` attribute.
-- **React Dashboard:** Initialized the Vite/React UI for the UE5 Web Browser Widget integration.
-- **Documentation:** Added comprehensive `docs/` architecture detailing workflow and installation.
-- **Data Protection:** Configured `.gitignore` to prevent accidental upload of proprietary Kozhikode Corporation GIS data.
+*   **Procedural 3D Workflow:** Automated Blender (`bpy`) script that successfully extrudes flat polygons into 3D buildings by dynamically pulling a 3.5m-multiplied height attribute straight from ArcGIS Pro Shapefiles.
+*   **Decoupled Architecture:** Strict separation between the Unreal Engine 5 rendering thread and the PostgreSQL database to ensure absolute system stability.
+*   **Node.js API Middleware:** Express server handling all database queries to protect PostGIS credentials from exposing within the UE5 client binary.
+*   **React Dashboard Overlay:** A Chromium-based HUD embedded directly into UE5, utilizing `LineTraceByChannel` raycasting to pull real-time building statistics from the backend.
+*   **113-Table Database Schema:** Fully relational PostgreSQL schema utilizing the PostGIS extension to handle 5 distinct municipal domains (Asset Registry, Work Orders, Citizen Portal, Administration, and Digital Twin Operations).
 
-### Excluded
-- (By Design) Live IoT integration, real-time database syncing, and traffic simulations were intentionally excluded from this v1.0 MVP release.
+### Removed
+*   **OSM & Deep Learning Models:** Completely scrapped initial crowdsourced data approaches due to massive topological errors, pivoting successfully to the authoritative Official Town Planner dataset.
+
+### Security
+*   **JWT Implementation:** Hardened the API routes with HttpOnly cookies and Role-Based Access Control (RBAC) to ensure unauthenticated users cannot manipulate municipal records.

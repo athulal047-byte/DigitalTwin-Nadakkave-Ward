@@ -1,19 +1,20 @@
 # Backend API Structure
 
-The `backend/` directory contains the Node.js/Express application that serves as the middle-tier for the Digital Twin ecosystem.
+The `backend/` directory holds the Node.js/Express application. I built this layer specifically to act as the middle-tier for the Digital Twin ecosystem.
 
 ## Design Philosophy
-The backend is designed exclusively to interface between the PostgreSQL database and the React Dashboard. It is completely decoupled from the Unreal Engine simulation, ensuring that the 3D rendering thread is never blocked by database query latency. 
+I designed the backend exclusively to interface between the PostgreSQL database and the React Dashboard. I intentionally decoupled it completely from the Unreal Engine simulation. If I had built the SQL queries directly into UE5, any network latency would have blocked the C++ rendering thread and tanked the framerate. By pushing all the data retrieval to this asynchronous Node.js layer, the 3D environment maintains a solid 60 FPS while the React UI waits for the JSON payloads to return.
 
 ## Core Modules
-The backend API exposes RESTful endpoints, organized around municipal domains:
+I organized the backend RESTful API endpoints around strict municipal domains:
 
-*   **`routes/`**: Contains the express router configurations for various endpoints (e.g., fetching building histories, submitting citizen grievances, updating tax status).
-*   **Authentication**: Uses JWT (JSON Web Tokens) to secure administrative routes. The `server.js` implementation checks token validity before allowing write operations to the database.
-*   **Migrations**: The original SQL schema setups and JavaScript-based database seeders are located here (and have been copied to the root `database/` directory for reference).
+*   **`routes/`**: Contains the Express router configurations. This handles everything from fetching specific building histories to submitting citizen grievances or tracking work order SLA compliance.
+*   **Authentication & Security**: The API uses JWT (JSON Web Tokens) in HttpOnly cookies to secure all administrative routes. My `server.js` implementation forcefully checks token validity before allowing any write operations to hit the database.
+*   **Database Management**: The backend previously managed the SQL schemas and JavaScript-based database seeders. I moved the raw SQL migration files to the root `database/migrations/` directory for easier reference.
 
 ## Environment Configuration
-The backend relies on a `.env` file (see `.env.example`) to connect to the PostgreSQL instance. 
-Crucial variables include:
-*   `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASS`, `DB_NAME` (must be `nadakkave`).
-*   `JWT_SECRET` for secure token signing.
+The backend requires a `.env` file (copy `.env.example` to start) to establish the connection pool with the PostgreSQL instance. 
+
+You must configure the following critical variables:
+*   `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASS`, `DB_NAME` (which defaults to `nadakkave`).
+*   `JWT_SECRET` for secure, cryptographically signed authentication tokens.

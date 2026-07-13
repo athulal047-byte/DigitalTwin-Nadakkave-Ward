@@ -57,11 +57,8 @@ export default function Login() {
             <Shield size={28} className="text-sky-400" />
           </div>
           <h1 className="text-2xl font-bold text-white tracking-tight mb-1">
-            Nadakkavu Smart City
+            Nadakkave Digital Twin
           </h1>
-          <p className="text-sm text-[var(--text-secondary)]">
-            Municipal Digital Twin Platform
-          </p>
         </div>
 
         {/* Form Card */}
