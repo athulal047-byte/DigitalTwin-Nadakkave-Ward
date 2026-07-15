@@ -105,7 +105,7 @@ Because I strictly decoupled the architecture, it is incredibly easy to expand:
 B.Tech Computer Science and Engineering (Artificial Intelligence & Machine Learning)  
 Sree Chitra Thirunal College of Engineering  
 Summer Internship Project – National Institute of Technology Calicut (NITC)  
-Department of Architecture
+Department of Center of Excellence of AI
 
 ## License
 
